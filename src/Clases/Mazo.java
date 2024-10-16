@@ -13,11 +13,12 @@ public class Mazo {
 
     public void inicializarMazo(){
         String[] palos = {"Oro", "Copa", "Espada", "Basto"};
-        int[] numeros = {1,2,3,4,5,6,7,10,11,12};
+        int[] numeros = {1, 2, 3, 4, 5, 6, 7, 10, 11, 12};
+        int totalCartas = palos.length * numeros.length;
+        cartas.ensureCapacity(totalCartas);
         for (String palo : palos) {
             for (int numero : numeros) {
-                Carta carta = new Carta(palo, numero);
-                cartas.add(carta);
+                cartas.add(new Carta(palo, numero));
             }
         }
     }
