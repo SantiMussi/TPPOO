@@ -8,6 +8,32 @@ public class Jugador {
 
     public Jugador(String nombre){
         this.nombre = nombre;
-        this.puntos = 0;
+        puntos = 0;
+        mano = new ArrayList<>();
+    }
+
+    public ArrayList<Carta> getMano(){
+        return mano;
+    }
+
+    public void recibirCarta(Carta carta){
+        mano.add(carta);
+    }
+
+    public Carta jugarCarta(int indice){
+        return mano.remove(indice);
+    }
+
+    public void sumarPuntos(int puntos){
+        this.puntos += puntos;
+    }
+
+    public int getPuntaje(){
+        return puntos;
+    }
+
+    @Override
+    public String toString(){
+        return nombre + "\n Puntos: " + puntos;
     }
 }
