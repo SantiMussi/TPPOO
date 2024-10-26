@@ -5,6 +5,7 @@ public class Jugador {
     private ArrayList<Carta> mano; //Cartas que tiene en la mano
     private String nombre; // Nombre del jugador
     private int puntos; // Puntos que tiene el jugador
+    private boolean fueMano; // Si fue mano en la ronda
 
     public Jugador(String nombre){
         this.nombre = nombre;
