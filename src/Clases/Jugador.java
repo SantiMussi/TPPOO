@@ -5,7 +5,9 @@ public class Jugador {
     private ArrayList<Carta> mano; //Cartas que tiene en la mano
     private String nombre; // Nombre del jugador
     private int puntos; // Puntos que tiene el jugador
-    private boolean fueMano; // Si fue mano en la ronda
+    private boolean esMano; // Si fue mano en la ronda
+    private boolean aceptaCanto;
+    
 
     public Jugador(String nombre){
         this.nombre = nombre;
@@ -13,6 +15,15 @@ public class Jugador {
         mano = new ArrayList<>();
     }
 
+    public void cantar(Canto canto){
+        System.out.println(nombre +  " canta " + canto);
+    }
+    
+    public boolean responder(boolean acepta){
+        this.aceptaCanto = acepta;
+        System.out.println(nombre + (acepta ? " acepta el canto" : " rechaza el canto"));
+        return acepta;
+    }
     public ArrayList<Carta> getMano(){
         return mano;
     }
