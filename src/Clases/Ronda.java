@@ -31,7 +31,13 @@ public class Ronda {
         }
 
         if(acepta){
-            System.out.println(jugador.);
+            System.out.println(jugador.getNombre() + " acepto el canto " + ultimoCanto);
+        } else{
+            System.out.println(jugador.getNombre() + " rechazó el canto " + ultimoCanto);
+            obtenerOtroJugador(jugador).sumarPuntos(puntosCantoActual);
         }
+    }
+    private Jugador obtenerOtroJugador(Jugador jugador){
+        return jugador == jugador1 ? jugador2 : jugador1;
     }
 }
