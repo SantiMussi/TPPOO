@@ -1,4 +1,5 @@
 package Clases;
+
 import java.util.Scanner;
 
 public class Partida {
@@ -9,72 +10,90 @@ public class Partida {
     private final int PUNTAJE_OBJETIVO = 30;
     private Scanner scanner;
 
-
     public Partida(Jugador jugador1, Jugador jugador2) {
         this.mazo = new Mazo();
         this.mazo.barajar();
         this.rondaActual = 1;
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
-        this.scanner = new Scanner(System.in); // Inicializamos el scanner
+        this.scanner = new Scanner(System.in);
     }
 
-    public void repartirCartas(){
-            for(int i = 0; i< 3; i++){ //Hasta que no tenga 3 cartas le sigue dando
-                jugador1.recibirCarta(mazo.repartirCarta());
-                jugador2.recibirCarta(mazo.repartirCarta());
-            }
+    public void repartirCartas() {
+        for (int i = 0; i < 3; i++) {
+            jugador1.recibirCarta(mazo.repartirCarta());
+            jugador2.recibirCarta(mazo.repartirCarta());
         }
+    }
 
     public void jugarPartida() {
         while (jugador1.getPuntaje() < PUNTAJE_OBJETIVO && jugador2.getPuntaje() < PUNTAJE_OBJETIVO) {
-            jugarRonda();
+            iniciarRonda();
             rondaActual++;
         }
         verificarGanador();
         scanner.close();
     }
 
-    public void iniciarRonda(){
-        System.out.println("Ronda "  + rondaActual);
-        repartirCartas();
-    }
-
-    private void jugarRonda() {
+    private void iniciarRonda() {
         System.out.println("\n--- Ronda " + rondaActual + " ---");
+        repartirCartas();
         Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
-        // Los jugadores alternan turnos para cantar y responder
+        if (!jugarCantos(ronda)) {
+            return; // Si la ronda termina por rechazo, no se juega la fase de cartas
+        }
+
+        jugarCartas(ronda);
+        sumarPuntosGanadorRonda(ronda);
+    }
+
+    private boolean jugarCantos(Ronda ronda) {
         boolean turnoJugador1 = true;
         while (!ronda.isRondaTerminada()) {
             Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
             ronda.mostrarOpcionesCanto(jugadorActual);
 
-            // Cambia el turno entre jugadores después de cada canto
-            turnoJugador1 = !turnoJugador1;
-        }
+            if (ronda.getUltimoCanto() != null) {
+                Jugador otroJugador = obtenerOtroJugador(jugadorActual);
+                System.out.println(otroJugador.getNombre() + ", ¿aceptas el canto? (true para sí, false para no):");
+                boolean acepta = obtenerRespuestaBoolean();
 
-        // Al finalizar los cantos, los jugadores juegan sus cartas
-        for (int i = 0; i < 3; i++) { // Cada jugador juega 3 cartas en una ronda
+                ronda.responderCanto(otroJugador, acepta);
+
+                if (!acepta) {
+                    // Sumar puntos al jugador que realizó el canto rechazado
+                    jugadorActual.sumarPuntos(ronda.getPuntosCantoActual());
+                    System.out.println(jugadorActual.getNombre() + " gana la ronda por rechazo de canto.");
+                    return false;
+                }
+            }
+
+            turnoJugador1 = !turnoJugador1; // Alterna el turno
+        }
+        return true;
+    }
+
+    private void jugarCartas(Ronda ronda) {
+        boolean turnoJugador1 = true;
+        for (int i = 0; i < 3; i++) {
             Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
-
-            // Mostrar las cartas del jugador antes de que elija
             jugadorActual.mostrarCartas();
-
             System.out.println(jugadorActual.getNombre() + ", elige una carta para jugar (0, 1 o 2):");
-            int indiceCarta = scanner.nextInt();
 
-            ronda.jugarCarta(jugadorActual, indiceCarta);
+            int indiceCarta = obtenerIndiceCarta(jugadorActual);
+            ronda.jugarCarta(jugadorActual);
 
-            // Cambia el turno para que el otro jugador juegue su carta
-            turnoJugador1 = !turnoJugador1;
+            turnoJugador1 = !turnoJugador1; // Alterna turno para jugar cartas
         }
+    }
 
-        // Sumar puntos al ganador de la ronda
-        ronda.sumarPuntosGanador();
-
-        // Verificar si alguien ganó la partida
-        verificarGanador();
+    private void sumarPuntosGanadorRonda(Ronda ronda) {
+        Jugador ganadorRonda = ronda.obtenerGanadorRonda();
+        if (ganadorRonda != null) {
+            ganadorRonda.sumarPuntos(2); // Sumar puntos de truco al ganador de la ronda
+            System.out.println(ganadorRonda.getNombre() + " gana la ronda!");
+        }
     }
 
     private void verificarGanador() {
@@ -85,4 +104,37 @@ public class Partida {
         }
     }
 
+    private Jugador obtenerOtroJugador(Jugador jugador) {
+        return jugador == jugador1 ? jugador2 : jugador1;
+    }
+
+    // Método para obtener un índice de carta válido
+    private int obtenerIndiceCarta(Jugador jugador) {
+        int indice;
+        while (true) {
+            try {
+                indice = scanner.nextInt();
+                if (indice >= 0 && indice < jugador.getMano().size()) {
+                    return indice;
+                } else {
+                    System.out.println("Índice inválido. Elige entre 0 y " + (jugador.getMano().size() - 1) + ":");
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Por favor, ingresa un número:");
+                scanner.next(); // Limpia el scanner
+            }
+        }
+    }
+
+    // Método para obtener respuesta booleana con manejo de errores
+    private boolean obtenerRespuestaBoolean() {
+        while (true) {
+            try {
+                return scanner.nextBoolean();
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Ingresa true o false:");
+                scanner.next(); // Limpia el scanner
+            }
+        }
+    }
 }

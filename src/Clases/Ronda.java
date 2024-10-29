@@ -112,7 +112,7 @@ public class Ronda {
         return jugador == jugador1 ? jugador2 : jugador1;
     }
 
-    private void jugarCarta(Jugador jugador) {
+    public void jugarCarta(Jugador jugador) {
         System.out.println("Elige la carta que quieres jugar:");
         jugador.mostrarCartas();
         int indiceCarta = scanner.nextInt();
@@ -161,5 +161,17 @@ public class Ronda {
             jugadorActual = jugadorOtro;
             jugadorOtro = temp;
         }
+    }
+
+    public int getPuntosCantoActual() {
+        return puntosCantoActual;
+    }
+
+    public Canto getUltimoCanto() {
+        return ultimoCanto;
+    }
+
+    public boolean isRondaTerminada() {
+        return victoriasJugador1 >= 2 || victoriasJugador2 >= 2;
     }
 }
