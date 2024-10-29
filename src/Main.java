@@ -1,5 +1,8 @@
 import Clases.*;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,6 +22,21 @@ public class Main {
         Partida partida = new Partida(jugador1, jugador2);
         partida.jugarPartida();
 
+
+        String resultadoFinal = "El ganador de la partida es: " + partida.getGanador();
+        // Guardar el resultado final en un archivo
+        guardarResultado(resultadoFinal);
+
         scanner.close();
+    }
+
+    private static void guardarResultado(String resultado) {
+        try (FileWriter fw = new FileWriter("resultados_partida.txt", true);
+             PrintWriter out = new PrintWriter(fw)) {
+            out.println(resultado);
+            System.out.println("Resultado guardado: " + resultado);
+        } catch (IOException e) {
+            System.err.println("Error al guardar el resultado: " + e.getMessage());
+        }
     }
 }
