@@ -41,12 +41,40 @@ public class Partida {
     }
 
     private void jugarRonda() {
-        System.out.println("Ronda " + rondaActual);
-        Ronda ronda = new Ronda(jugador1, jugador2, scanner); // Pasamos el scanner a Ronda
-        ronda.mostrarOpcionesCanto(jugador1);
-        ronda.mostrarOpcionesCanto(jugador2);
+        System.out.println("\n--- Ronda " + rondaActual + " ---");
+        Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
+        // Los jugadores alternan turnos para cantar y responder
+        boolean turnoJugador1 = true;
+        while (!ronda.isRondaTerminada()) {
+            Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
+            ronda.mostrarOpcionesCanto(jugadorActual);
 
+            // Cambia el turno entre jugadores después de cada canto
+            turnoJugador1 = !turnoJugador1;
+        }
+
+        // Al finalizar los cantos, los jugadores juegan sus cartas
+        for (int i = 0; i < 3; i++) { // Cada jugador juega 3 cartas en una ronda
+            Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
+
+            // Mostrar las cartas del jugador antes de que elija
+            jugadorActual.mostrarCartas();
+
+            System.out.println(jugadorActual.getNombre() + ", elige una carta para jugar (0, 1 o 2):");
+            int indiceCarta = scanner.nextInt();
+
+            ronda.jugarCarta(jugadorActual, indiceCarta);
+
+            // Cambia el turno para que el otro jugador juegue su carta
+            turnoJugador1 = !turnoJugador1;
+        }
+
+        // Sumar puntos al ganador de la ronda
+        ronda.sumarPuntosGanador();
+
+        // Verificar si alguien ganó la partida
+        verificarGanador();
     }
 
     private void verificarGanador() {

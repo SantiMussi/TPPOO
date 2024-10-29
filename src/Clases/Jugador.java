@@ -52,4 +52,11 @@ public class Jugador {
     public String toString(){
         return nombre + "\n Puntos: " + puntos;
     }
+
+    public void mostrarCartas() {
+        System.out.println("Cartas en mano de " + nombre + ":");
+        for (int i = 0; i < mano.size(); i++) {
+            System.out.println(i + ": " + mano.get(i)); // Muestra el índice y la carta
+        }
+    }
 }

@@ -11,6 +11,9 @@ public class Ronda {
     private boolean envidoCantado;
     private int puntosCantoActual;
     private Scanner scanner;
+    private boolean isganadorCarta1;
+    private boolean isganadorCarta2;
+    private boolean isganadorCarta3;
 
     public Ronda(Jugador jugador1, Jugador jugador2, Scanner scanner) {
         this.jugador1 = jugador1;
@@ -140,5 +143,19 @@ public class Ronda {
 
     private Jugador obtenerOtroJugador(Jugador jugador){
         return jugador == jugador1 ? jugador2 : jugador1;
+    }
+
+    public void iniciarTurno() {
+        Jugador jugadorActual = jugador1;
+        Jugador jugadorOtro = jugador2;
+
+        for (int i = 0; i < 2; i++) { // Repite para ambos jugadores
+            mostrarOpcionesCanto(jugadorActual);
+
+            // Cambia el turno entre jugadores
+            Jugador temp = jugadorActual;
+            jugadorActual = jugadorOtro;
+            jugadorOtro = temp;
+        }
     }
 }
