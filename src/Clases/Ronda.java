@@ -17,6 +17,7 @@ public class Ronda {
     private int victoriasJugador1;
     private int victoriasJugador2;
     private boolean primeraRondaGanada;
+    private int cantRondaChica = 0;
 
     public Ronda(Jugador jugador1, Jugador jugador2, Scanner scanner) {
         this.jugador1 = jugador1;
@@ -45,16 +46,20 @@ public class Ronda {
         System.out.println("5. Retruco");
         System.out.println("6. Vale Cuatro");
         System.out.println("7. Jugar carta");
+        System.out.println("8. Ver cartas");
 
         int opcion = scanner.nextInt();
         if (opcion >= 1 && opcion <= 6) {
             manejarCanto(jugador, Canto.values()[opcion - 1]);
         } else if (opcion == 7) {
             jugarCarta(jugador);
-        } else {
-            System.out.println("Opción no válida. Elige de nuevo.");
+        } else if (opcion == 8) {
+            jugador.mostrarCartas();
             mostrarOpcionesCanto(jugador);
-        }
+        }else {
+                System.out.println("Opción no válida. Elige de nuevo.");
+                mostrarOpcionesCanto(jugador);
+            }
     }
 
     private boolean validarCanto(Canto canto) {
@@ -69,6 +74,9 @@ public class Ronda {
             return false;
         } else if (canto == Canto.VALECUATRO && !trucoCantado) {
             System.out.println("No se puede cantar Vale Cuatro sin Truco.");
+            return false;
+        } else if( canto == Canto.ENVIDO && cantRondaChica != 0){
+            System.out.println("No se puede cantar envido despues de las primeras cartas jugadas");
             return false;
         }
         return true;
@@ -119,48 +127,12 @@ public class Ronda {
         jugador.jugarCarta(indiceCarta);
     }
 
-    public void jugarRondasChicas(Jugador jugador1, int indiceCarta1, Jugador jugador2, int indiceCarta2) {
-        Carta cartaJugador1 = jugador1.jugarCarta(indiceCarta1);
-        Carta cartaJugador2 = jugador2.jugarCarta(indiceCarta2);
-        System.out.println(jugador1.getNombre() + " juega " + cartaJugador1);
-        System.out.println(jugador2.getNombre() + " juega " + cartaJugador2);
-
-        if (cartaJugador1.compararCon(cartaJugador2)) {
-            registrarVictoria(jugador1, "gana este chico.");
-        } else if (cartaJugador2.compararCon(cartaJugador1)) {
-            registrarVictoria(jugador2, "gana este chico.");
-        } else {
-            System.out.println("Empate en este chico.");
-        }
-    }
-
-    private void registrarVictoria(Jugador ganador, String mensaje) {
-        if (ganador == jugador1) {
-            victoriasJugador1++;
-            if (victoriasJugador1 == 1 && victoriasJugador2 == 0) primeraRondaGanada = true;
-        } else {
-            victoriasJugador2++;
-        }
-        System.out.println(ganador.getNombre() + " " + mensaje);
-    }
 
     public Jugador obtenerGanadorRonda() {
         if (victoriasJugador1 >= 2) return jugador1;
         if (victoriasJugador2 >= 2) return jugador2;
         if (victoriasJugador1 == 1 && victoriasJugador2 == 1) return primeraRondaGanada ? jugador1 : jugador2;
         return null;
-    }
-
-    public void iniciarTurno() {
-        Jugador jugadorActual = jugador1;
-        Jugador jugadorOtro = jugador2;
-
-        for (int i = 0; i < 2; i++) {
-            mostrarOpcionesCanto(jugadorActual);
-            Jugador temp = jugadorActual;
-            jugadorActual = jugadorOtro;
-            jugadorOtro = temp;
-        }
     }
 
     public int getPuntosCantoActual() {
