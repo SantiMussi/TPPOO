@@ -40,6 +40,10 @@ public class Jugador {
         this.puntos += puntos;
     }
 
+    public String getNombre(){
+        return nombre;
+    }
+
     public int getPuntaje(){
         return puntos;
     }

@@ -1,18 +1,22 @@
 package Clases;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Partida {
     private Mazo mazo;
     private Jugador jugador1;
     private Jugador jugador2;
     private int rondaActual;
+    private final int PUNTAJE_OBJETIVO = 30;
+    private Scanner scanner; // Definimos el scanner aquí para toda la partida
 
-    public Partida(Jugador jugador1, Jugador jugador2){
-        mazo = new Mazo();
-        mazo.barajar();
-        rondaActual = 1;
+
+    public Partida(Jugador jugador1, Jugador jugador2) {
+        this.mazo = new Mazo();
+        this.mazo.barajar();
+        this.rondaActual = 1;
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
+        this.scanner = new Scanner(System.in); // Inicializamos el scanner
     }
 
     public void repartirCartas(){
@@ -22,8 +26,35 @@ public class Partida {
             }
         }
 
+    public void jugarPartida() {
+        while (jugador1.getPuntaje() < PUNTAJE_OBJETIVO && jugador2.getPuntaje() < PUNTAJE_OBJETIVO) {
+            jugarRonda();
+            rondaActual++;
+        }
+        verificarGanador();
+        scanner.close();
+    }
+
     public void iniciarRonda(){
         System.out.println("Ronda "  + rondaActual);
         repartirCartas();
     }
+
+    private void jugarRonda() {
+        System.out.println("Ronda " + rondaActual);
+        Ronda ronda = new Ronda(jugador1, jugador2, scanner); // Pasamos el scanner a Ronda
+        ronda.mostrarOpcionesCanto(jugador1);
+        ronda.mostrarOpcionesCanto(jugador2);
+
+
+    }
+
+    private void verificarGanador() {
+        if (jugador1.getPuntaje() >= PUNTAJE_OBJETIVO) {
+            System.out.println(jugador1.getNombre() + " ha ganado la partida!");
+        } else if (jugador2.getPuntaje() >= PUNTAJE_OBJETIVO) {
+            System.out.println(jugador2.getNombre() + " ha ganado la partida!");
+        }
+    }
+
 }
