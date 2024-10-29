@@ -5,8 +5,10 @@ public class Ronda {
     private Jugador jugador1;
     private Jugador jugador2;
     private Canto ultimoCanto;
-    private boolean envidoCantado;
+    private boolean retrucoCantado;
+    private boolean valeCuatroCantado;
     private boolean trucoCantado;
+    private boolean envidoCantado;
     private int puntosCantoActual;
     private Scanner scanner;
 
@@ -14,9 +16,11 @@ public class Ronda {
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
         this.ultimoCanto = null;
-        this.envidoCantado = false;
+        this.retrucoCantado = false;
+        this.valeCuatroCantado = false;
         this.trucoCantado = false;
         this.scanner = scanner;
+        this.envidoCantado = false;
     }
 
     public void mostrarOpcionesCanto(Jugador jugador) {
@@ -63,12 +67,43 @@ public class Ronda {
         manejarCanto(jugador, cantoElegido);
     }
 
+    // Método de validación
+    private boolean validarCanto(Canto canto) {
+        switch (canto) {
+            case ENVIDO:
+                if (trucoCantado) {
+                    System.out.println("No se puede cantar Envido después del Truco.");
+                    return false;
+                }
+                break;
+            case TRUCO:
+                if (trucoCantado) {
+                    System.out.println("No se puede cantar Truco dos veces.");
+                    return false;
+                }
+                break;
+            case RETRUCO:
+                if (!trucoCantado) {
+                    System.out.println("No se puede cantar Retruco si no se cantó Truco antes.");
+                    return false;
+                }
+                break;
+            case VALECUATRO:
+                if (!trucoCantado) {
+                    System.out.println("No se puede cantar Vale Cuatro si no se cantó Truco antes.");
+                    return false;
+                }
+                break;
+        }
+        return true; //Si pasa todas las validaciones, es un canto válido
+    }
+
     private void manejarCanto(Jugador jugador, Canto canto) {
-        if (canto == Canto.ENVIDO && trucoCantado) {
-            System.out.println("No se puede cantar Envido después del Truco.");
-            return;
+        if (!validarCanto(canto)) {
+            return; //Termina si el canto no es válido
         }
 
+        //Marca los cantos para futuras validaciones
         if (canto == Canto.TRUCO) {
             trucoCantado = true;
         } else if (canto == Canto.ENVIDO || canto == Canto.REAL_ENVIDO || canto == Canto.FALTA_ENVIDO) {

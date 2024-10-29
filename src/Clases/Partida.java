@@ -7,7 +7,7 @@ public class Partida {
     private Jugador jugador2;
     private int rondaActual;
     private final int PUNTAJE_OBJETIVO = 30;
-    private Scanner scanner; // Definimos el scanner aquí para toda la partida
+    private Scanner scanner;
 
 
     public Partida(Jugador jugador1, Jugador jugador2) {
@@ -20,7 +20,7 @@ public class Partida {
     }
 
     public void repartirCartas(){
-            for(int i = 0; i< 3; i++){ // Hasta que no tenga 3 cartas le sigue dando
+            for(int i = 0; i< 3; i++){ //Hasta que no tenga 3 cartas le sigue dando
                 jugador1.recibirCarta(mazo.repartirCarta());
                 jugador2.recibirCarta(mazo.repartirCarta());
             }
