@@ -57,9 +57,9 @@ public class Ronda {
             jugador.mostrarCartas();
             mostrarOpcionesCanto(jugador);
         }else {
-                System.out.println("Opción no válida. Elige de nuevo.");
-                mostrarOpcionesCanto(jugador);
-            }
+            System.out.println("Opción no válida. Elige de nuevo.");
+            mostrarOpcionesCanto(jugador);
+        }
     }
 
     private boolean validarCanto(Canto canto) {
