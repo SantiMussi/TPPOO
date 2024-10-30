@@ -91,23 +91,17 @@ public class Ronda {
         realizarCanto(jugador, canto);
     }
 
-    public boolean realizarCanto(Jugador jugador, Canto canto) {
+    public void realizarCanto(Jugador jugador, Canto canto) {
         if (ultimoCanto != null && canto.getPrioridad() <= ultimoCanto.getPrioridad()) {
             System.out.println("Canto no permitido, " + canto + " tiene menor o igual prioridad que " + ultimoCanto);
-            return false;
+            return;
         }
         ultimoCanto = canto;
         puntosCantoActual = canto.getPuntos();
         jugador.cantar(canto);
-        return true;
     }
 
     public void responderCanto(Jugador jugador, boolean acepta) {
-        if (ultimoCanto == null) {
-            System.out.println("No hay canto al que responder.");
-            return;
-        }
-
         if (acepta) {
             System.out.println(jugador.getNombre() + " acepta el canto " + ultimoCanto);
         } else {

@@ -30,8 +30,4 @@ public class Mazo {
         return cartas.remove(0);
     }
 
-    public boolean tieneCartas(){
-        return !cartas.isEmpty();
-    }
-
 }

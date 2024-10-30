@@ -145,10 +145,7 @@ public class Partida {
     public String getGanador() {
         if (jugador1.getPuntaje() >= PUNTAJE_OBJETIVO) {
             return jugador1.getNombre();
-        } else if (jugador2.getPuntaje() >= PUNTAJE_OBJETIVO) {
-            return jugador2.getNombre();
-        } else {
-            return "Empate";
         }
+        return jugador2.getNombre();
     }
 }
