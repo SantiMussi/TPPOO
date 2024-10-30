@@ -35,6 +35,8 @@ TrucoGame/
 │      ├── Mazo.java
 │      ├── Jugador.java
 │      └── Partida.java
+|      └── Ronda.java
+|      └── Canto.java
 └── README.md
 ```
 
@@ -42,6 +44,8 @@ TrucoGame/
 - **Mazo.java**: Clase que maneja la baraja de cartas.
 - **Jugador.java**: Clase que representa a cada jugador y su mano.
 - **Partida.java**: Clase que controla el flujo del juego y las rondas.
+- **Ronda.java**: Clase que representa la ronda en juego.
+- **Canto.java**: Enum que representa los cantos en el juego.
 
 ## Cómo Ejecutar el Proyecto
 
