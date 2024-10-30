@@ -59,4 +59,6 @@ public class Jugador {
             System.out.println(i + ": " + mano.get(i)); // Muestra el índice y la carta
         }
     }
+
+
 }

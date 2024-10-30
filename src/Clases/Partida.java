@@ -40,16 +40,20 @@ public class Partida {
         System.out.println("Puntajes: ");
         System.out.println(jugador1.getNombre() + ": " + jugador1.getPuntaje());
         System.out.println(jugador2.getNombre() + ": " + jugador2.getPuntaje());
+
         repartirCartas();
         Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
-        if (!jugarCantos(ronda)) {
-            return; // Si la ronda termina por rechazo, no se juega la fase de cartas
+        // Solo verifica cantos al inicio, no después de cada carta
+        boolean cantoRealizado = jugarCantos(ronda);
+        if (!cantoRealizado) {
+            return; // Si la ronda termina por rechazo de canto, no se juega la fase de cartas
         }
 
-        jugarCartas(ronda);
+        jugarCartas(ronda); // Jugar las cartas sin preguntar por cantos en cada turno
         sumarPuntosGanadorRonda(ronda);
     }
+
 
     private boolean jugarCantos(Ronda ronda) {
         boolean turnoJugador1 = true;

@@ -56,7 +56,7 @@ public class Ronda {
         } else if (opcion == 8) {
             jugador.mostrarCartas();
             mostrarOpcionesCanto(jugador);
-        }else {
+        } else {
             System.out.println("Opción no válida. Elige de nuevo.");
             mostrarOpcionesCanto(jugador);
         }
@@ -75,7 +75,7 @@ public class Ronda {
         } else if (canto == Canto.VALECUATRO && !trucoCantado) {
             System.out.println("No se puede cantar Vale Cuatro sin Truco.");
             return false;
-        } else if( canto == Canto.ENVIDO && cantRondaChica != 0){
+        } else if (canto == Canto.ENVIDO && cantRondaChica != 0) {
             System.out.println("No se puede cantar envido despues de las primeras cartas jugadas");
             return false;
         }
@@ -140,4 +140,6 @@ public class Ronda {
     public boolean isRondaTerminada() {
         return victoriasJugador1 >= 2 || victoriasJugador2 >= 2;
     }
+
+
 }

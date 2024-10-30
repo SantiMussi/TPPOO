@@ -41,6 +41,13 @@ public class Carta {
         return String.valueOf(numero); // Solo el número para el resto de las cartas
     }
 
+    public String getPalo() {
+        return palo;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
     // Método para comparar cartas
     public boolean compararCon(Carta otraCarta) {
         int valorActual = jerarquia.getOrDefault(this.getClave(), 0);
