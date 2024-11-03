@@ -67,7 +67,7 @@ public class Partida {
                 if (!acepta) {
                     // Sumar puntos al jugador que realizó el canto rechazado
                     // Por simplicidad, vamos a hacer que si se rechaza un canto directamente termina la ronda
-                    jugadorActual.sumarPuntos(ronda.getPuntosCantoActual());
+                    jugadorActual.sumarPuntos(ronda.getUltimoCanto().getPuntos());
                     System.out.println(jugadorActual.getNombre() + " gana la ronda por rechazo de canto.");
                     return;
                 }
