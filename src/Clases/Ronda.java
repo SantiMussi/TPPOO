@@ -12,6 +12,10 @@ public class Ronda {
     private boolean envidoCantado;
     private int puntosCantoActual;
     private Scanner scanner;
+    private Carta cartaJugador1;
+    private Carta cartaJugador2;
+    private int cartasJugadas;
+    private boolean cantoRespondido = true;
 
     // Variables para el conteo de chicos y ganador de la ronda
     private int victoriasJugador1;
@@ -38,14 +42,23 @@ public class Ronda {
     }
 
     public void mostrarOpcionesCanto(Jugador jugador) {
+        if (!cantoRespondido) {
+            responderCantoPendiente(jugador);
+            return;
+        }
+
         System.out.println("\n" + jugador.getNombre() + ", elige tu acción:");
 
-        if (!envidoCantado || trucoCantado) { // Permitir cantos de truco tras el envido
+        if (!envidoCantado && !trucoCantado) {
             System.out.println("1. Envido");
             System.out.println("2. Real Envido");
             System.out.println("3. Falta Envido");
+        }
+        if (!trucoCantado) {
             System.out.println("4. Truco");
+        } else if (ultimoCanto == Canto.TRUCO) {
             System.out.println("5. Retruco");
+        } else if (ultimoCanto == Canto.RETRUCO) {
             System.out.println("6. Vale Cuatro");
         }
 
@@ -61,9 +74,7 @@ public class Ronda {
                 manejarCanto(jugador, cantoElegido);
                 break;
             case 7:
-                jugador.mostrarCartas();
-                int indiceCarta = scanner.nextInt();
-                jugador.jugarCarta(indiceCarta);
+                jugarCarta(jugador);
                 break;
             case 8:
                 jugador.mostrarCartas();
@@ -74,7 +85,90 @@ public class Ronda {
                 mostrarOpcionesCanto(jugador);
         }
     }
+    private void responderCantoPendiente(Jugador jugador) {
+        Jugador otroJugador = (jugador == jugador1) ? jugador2 : jugador1;
+        System.out.println(jugador.getNombre() + ", ¿aceptas el canto " + ultimoCanto + "? (true para sí, false para no):");
+        boolean acepta = scanner.nextBoolean();
+        if (acepta) {
+            System.out.println(jugador.getNombre() + " acepta el canto " + ultimoCanto);
+            if (ultimoCanto == Canto.ENVIDO || ultimoCanto == Canto.REAL_ENVIDO || ultimoCanto == Canto.FALTA_ENVIDO) {
+                determinarGanadorEnvido(ultimoCanto);
+            }
+        } else {
+            System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
+            otroJugador.sumarPuntos(puntosCantoActual);
+        }
+        cantoRespondido = true;
+        ultimoCanto = null;
+    }
 
+    private void manejarCanto(Jugador jugador, Canto canto) {
+        System.out.println(jugador.getNombre() + " canta " + canto);
+        ultimoCanto = canto;
+        cantoRespondido = false;
+        if (canto == Canto.ENVIDO || canto == Canto.REAL_ENVIDO || canto == Canto.FALTA_ENVIDO) {
+            envidoCantado = true;
+        } else if (canto == Canto.TRUCO || canto == Canto.RETRUCO || canto == Canto.VALECUATRO) {
+            trucoCantado = true;
+        }
+    }
+
+    private void jugarCarta(Jugador jugador) {
+        jugador.mostrarCartas();
+        System.out.println("Elige el índice de la carta a jugar:");
+        int indiceCarta = scanner.nextInt();
+        Carta cartaJugada = jugador.jugarCarta(indiceCarta);
+        manejarCartaJugada(jugador, cartaJugada);
+    }
+
+    private void manejarCartaJugada(Jugador jugador, Carta carta) {
+        // No debería preguntar por aceptar canto aquí
+        if (jugador == jugador1) {
+            cartaJugador1 = carta;
+        } else {
+            cartaJugador2 = carta;
+        }
+        cartasJugadas++;
+
+        System.out.println(jugador.getNombre() + " jugó: " + carta);
+
+        if (cartasJugadas == 2) {
+            determinarGanadorMano();
+            cartasJugadas = 0;
+            cartaJugador1 = null;
+            cartaJugador2 = null;
+            cantRondaChica++;
+        }
+    }
+
+    private void determinarGanadorMano() {
+        if (cartaJugador1 != null && cartaJugador2 != null) {
+            boolean ganaJugador1 = cartaJugador1.compararCon(cartaJugador2);
+
+            if (ganaJugador1) {
+                System.out.println(jugador1.getNombre() + " gana la mano!");
+                victoriasJugador1++;
+                if (!primeraRondaGanada && victoriasJugador1 == 1) {
+                    primeraRondaGanada = true;
+                }
+            } else if (cartaJugador2.compararCon(cartaJugador1)) {
+                System.out.println(jugador2.getNombre() + " gana la mano!");
+                victoriasJugador2++;
+                if (!primeraRondaGanada && victoriasJugador2 == 1) {
+                    primeraRondaGanada = true;
+                }
+            } else {
+                System.out.println("¡Empate en esta mano!");
+            }
+
+            // Verificar si alguien ganó la ronda
+            if (victoriasJugador1 >= 2) {
+                System.out.println(jugador1.getNombre() + " gana la ronda!");
+            } else if (victoriasJugador2 >= 2) {
+                System.out.println(jugador2.getNombre() + " gana la ronda!");
+            }
+        }
+    }
 
     private boolean validarCanto(Canto canto) {
         if (canto == Canto.ENVIDO && trucoCantado) {
@@ -94,25 +188,6 @@ public class Ronda {
             return false;
         }
         return true;
-    }
-
-    private void manejarCanto(Jugador jugador, Canto canto) {
-        if (!validarCanto(canto)) return;
-
-        if (canto == Canto.TRUCO) trucoCantado = true;
-        if (canto == Canto.ENVIDO || canto == Canto.REAL_ENVIDO || canto == Canto.FALTA_ENVIDO) envidoCantado = true;
-
-        realizarCanto(jugador, canto);
-    }
-
-    public void realizarCanto(Jugador jugador, Canto canto) {
-        if (ultimoCanto != null && canto.getPrioridad() <= ultimoCanto.getPrioridad()) {
-            System.out.println("Canto no permitido, " + canto + " tiene menor o igual prioridad que " + ultimoCanto);
-            return;
-        }
-        ultimoCanto = canto;
-        puntosCantoActual = canto.getPuntos();
-        jugador.cantar(canto);
     }
 
     public void responderCanto(Jugador jugador, boolean acepta) {
@@ -167,10 +242,10 @@ public class Ronda {
             System.exit(0); // Termina el programa
         }
 
+        ultimoCanto = null;
+        cantoRespondido = true;
         return ganadorEnvido;
     }
-
-
 
     public int getPuntosCantoActual() {
         return puntosCantoActual;

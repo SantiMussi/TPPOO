@@ -52,7 +52,6 @@ public class Carta {
     public boolean compararCon(Carta otraCarta) {
         int valorActual = jerarquia.getOrDefault(this.getClave(), 0);
         int valorOtra = jerarquia.getOrDefault(otraCarta.getClave(), 0);
-
         return valorActual > valorOtra;
     }
 
