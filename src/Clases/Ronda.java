@@ -49,17 +49,42 @@ public class Ronda {
         System.out.println("8. Ver cartas");
 
         int opcion = scanner.nextInt();
-        if (opcion >= 1 && opcion <= 6) {
-            manejarCanto(jugador, Canto.values()[opcion - 1]);
-        } else if (opcion == 7) {
-            jugarCarta(jugador);
-        } else if (opcion == 8) {
-            jugador.mostrarCartas();
-            mostrarOpcionesCanto(jugador);
-        } else {
-            System.out.println("Opción no válida. Elige de nuevo.");
-            mostrarOpcionesCanto(jugador);
+        Canto cantoElegido = null;
+
+        switch (opcion) {
+            case 1:
+                cantoElegido = Canto.ENVIDO;
+                break;
+            case 2:
+                cantoElegido = Canto.REAL_ENVIDO;
+                break;
+            case 3:
+                cantoElegido = Canto.FALTA_ENVIDO;
+                break;
+            case 4:
+                cantoElegido = Canto.TRUCO;
+                break;
+            case 5:
+                cantoElegido = Canto.RETRUCO;
+                break;
+            case 6:
+                cantoElegido = Canto.VALECUATRO;
+                break;
+            case 7:
+                jugador.mostrarCartas();
+                int indiceCarta = scanner.nextInt();
+                jugador.jugarCarta(indiceCarta);
+            case 8:
+                jugador.mostrarCartas();
+                mostrarOpcionesCanto(jugador);
+                return;
+            default:
+                System.out.println("Opción no válida. Elige de nuevo.");
+                mostrarOpcionesCanto(jugador);
+                return;
         }
+
+        manejarCanto(jugador, cantoElegido);
     }
 
     private boolean validarCanto(Canto canto) {
@@ -104,6 +129,9 @@ public class Ronda {
     public void responderCanto(Jugador jugador, boolean acepta) {
         if (acepta) {
             System.out.println(jugador.getNombre() + " acepta el canto " + ultimoCanto);
+            if(ultimoCanto == Canto.ENVIDO || ultimoCanto == Canto.REAL_ENVIDO || ultimoCanto == Canto.FALTA_ENVIDO){
+                determinarGanadorEnvido(ultimoCanto);
+            }
         } else {
             System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
             obtenerOtroJugador(jugador).sumarPuntos(puntosCantoActual);
@@ -128,6 +156,28 @@ public class Ronda {
         if (victoriasJugador1 == 1 && victoriasJugador2 == 1) return primeraRondaGanada ? jugador1 : jugador2;
         return null;
     }
+
+    public Jugador determinarGanadorEnvido(Canto tipoEnvido) {
+        int envidoJugador1 = jugador1.calcularEnvido();
+        int envidoJugador2 = jugador2.calcularEnvido();
+
+        System.out.println(jugador1.getNombre() + " tiene " + envidoJugador1 + " puntos de envido.");
+        System.out.println(jugador2.getNombre() + " tiene " + envidoJugador2 + " puntos de envido.");
+
+        if (envidoJugador1 > envidoJugador2) {
+            jugador1.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 1
+            System.out.println(jugador1.getNombre() + " gana el envido.");
+            return jugador1;
+        } else if (envidoJugador2 > envidoJugador1) {
+            jugador2.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 2
+            System.out.println(jugador2.getNombre() + " gana el envido.");
+            return jugador2;
+        } else {
+            System.out.println("Empate en el envido, no se asignan puntos.");
+            return null; // Empate
+        }
+    }
+
 
     public int getPuntosCantoActual() {
         return puntosCantoActual;

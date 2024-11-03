@@ -44,7 +44,7 @@ public class Partida {
         repartirCartas();
         Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
-        // Solo verifica cantos al inicio, no después de cada carta
+        //Solo verifica cantos al inicio, no después de cada carta
         boolean cantoRealizado = jugarCantos(ronda);
         if (!cantoRealizado) {
             return; // Si la ronda termina por rechazo de canto, no se juega la fase de cartas
