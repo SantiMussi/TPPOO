@@ -36,10 +36,6 @@ public class Ronda {
     }
 
     public void mostrarOpcionesCanto(Jugador jugador) {
-        if (!cantoRespondido) {
-            responderCantoPendiente(jugador);
-            return;
-        }
 
         System.out.println("\n" + jugador.getNombre() + ", elige tu acción:");
 
@@ -78,22 +74,6 @@ public class Ronda {
                 System.out.println("Opción no válida. Elige de nuevo.");
                 mostrarOpcionesCanto(jugador);
         }
-    }
-    private void responderCantoPendiente(Jugador jugador) {
-        Jugador otroJugador = (jugador == jugador1) ? jugador2 : jugador1;
-        System.out.println(jugador.getNombre() + ", ¿aceptas el canto " + ultimoCanto + "? (true para sí, false para no):");
-        boolean acepta = scanner.nextBoolean();
-        if (acepta) {
-            System.out.println(jugador.getNombre() + " acepta el canto " + ultimoCanto);
-            if (ultimoCanto == Canto.ENVIDO || ultimoCanto == Canto.REAL_ENVIDO || ultimoCanto == Canto.FALTA_ENVIDO) {
-                determinarGanadorEnvido(ultimoCanto);
-            }
-        } else {
-            System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
-            otroJugador.sumarPuntos(ultimoCanto.getPuntos());
-        }
-        cantoRespondido = true;
-        ultimoCanto = null;
     }
 
     private void manejarCanto(Jugador jugador, Canto canto) {
