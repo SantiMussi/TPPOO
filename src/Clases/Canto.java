@@ -9,9 +9,10 @@ public enum Canto {
     VALECUATRO(4, 6);
 
     private final int puntos;
-
+    private final int prioridad;
     Canto(int puntos, int prioridad) {
         this.puntos = puntos;
+        this.prioridad = prioridad;
     }
 
     public int getPuntos() {

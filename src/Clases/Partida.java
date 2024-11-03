@@ -7,7 +7,7 @@ public class Partida {
     private Jugador jugador1;
     private Jugador jugador2;
     private int rondaActual;
-    private final int PUNTAJE_OBJETIVO = 30;
+    private final int PUNTAJE_OBJETIVO = 4;
     private Scanner scanner;
 
     public Partida(Jugador jugador1, Jugador jugador2) {

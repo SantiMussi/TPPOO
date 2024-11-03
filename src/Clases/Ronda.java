@@ -19,7 +19,6 @@ public class Ronda {
     private int victoriasJugador1;
     private int victoriasJugador2;
     private boolean primeraRondaGanada;
-    private int cantRondaChica = 0;
 
     public Ronda(Jugador jugador1, Jugador jugador2, Scanner scanner) {
         this.jugador1 = jugador1;
@@ -133,7 +132,6 @@ public class Ronda {
             cartasJugadas = 0;
             cartaJugador1 = null;
             cartaJugador2 = null;
-            cantRondaChica++;
         }
     }
 
@@ -191,36 +189,25 @@ public class Ronda {
         return null;
     }
 
-    public Jugador determinarGanadorEnvido(Canto tipoEnvido) {
+    public void determinarGanadorEnvido(Canto tipoEnvido) {
         int envidoJugador1 = jugador1.calcularEnvido();
         int envidoJugador2 = jugador2.calcularEnvido();
 
         System.out.println(jugador1.getNombre() + " tiene " + envidoJugador1 + " puntos de envido.");
         System.out.println(jugador2.getNombre() + " tiene " + envidoJugador2 + " puntos de envido.");
 
-        Jugador ganadorEnvido = null;
-
         if (envidoJugador1 > envidoJugador2) {
             jugador1.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 1
             System.out.println(jugador1.getNombre() + " gana el envido.");
-            ganadorEnvido = jugador1;
         } else if (envidoJugador2 > envidoJugador1) {
             jugador2.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 2
             System.out.println(jugador2.getNombre() + " gana el envido.");
-            ganadorEnvido = jugador2;
         } else {
             System.out.println("Empate en el envido, no se asignan puntos.");
         }
 
-        // Verificación de finalización de la partida
-        if (ganadorEnvido != null && ganadorEnvido.getPuntaje() >= 30) {
-            System.out.println(ganadorEnvido.getNombre() + " ha ganado la partida por Falta Envido!");
-            System.exit(0); // Termina el programa
-        }
-
         ultimoCanto = null;
         cantoRespondido = true;
-        return ganadorEnvido;
     }
 
     public int getPuntosCantoActual() {

@@ -35,10 +35,11 @@ public class Carta {
 
     //Método para obtener la clave de jerarquía
     private String getClave() {
-        if (numero == 1 || numero == 7) {
+        if ((numero == 1 && (palo.equals("Espada") || palo.equals("Basto"))) ||
+                (numero == 7 && (palo.equals("Espada") || palo.equals("Oro")))) {
             return numero + " " + palo;
         }
-        return String.valueOf(numero); // Solo el número para el resto de las cartas
+        return String.valueOf(numero);
     }
 
     public String getPalo() {
@@ -48,12 +49,15 @@ public class Carta {
     public int getNumero() {
         return numero;
     }
+
     // Método para comparar cartas
     public boolean compararCon(Carta otraCarta) {
         int valorActual = jerarquia.getOrDefault(this.getClave(), 0);
         int valorOtra = jerarquia.getOrDefault(otraCarta.getClave(), 0);
         return valorActual > valorOtra;
     }
+
+
 
     @Override
     public String toString() {
