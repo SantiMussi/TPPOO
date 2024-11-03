@@ -80,7 +80,7 @@ public class Jugador {
         }
 
         // Si hay dos cartas del mismo palo, suma 20 puntos
-        if (puntajesPorPalo.size() < mano.size()) { // Menos palos que cartas, indica que hay cartas del mismo palo
+        if (puntajesPorPalo.size() < mano.size()) { // Menos palos que cartas, por lo tanto hay cartas del mismo palo
             maxPuntaje += 20;
         }
 
