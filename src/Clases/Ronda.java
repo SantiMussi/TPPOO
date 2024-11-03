@@ -154,13 +154,6 @@ public class Ronda {
             } else {
                 System.out.println("¡Empate en esta mano!");
             }
-
-            // Verificar si alguien ganó la ronda
-            if (victoriasJugador1 >= 2) {
-                System.out.println(jugador1.getNombre() + " gana la ronda!");
-            } else if (victoriasJugador2 >= 2) {
-                System.out.println(jugador2.getNombre() + " gana la ronda!");
-            }
         }
     }
 

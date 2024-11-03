@@ -51,7 +51,7 @@ public class Partida {
     }
 
 
-    private boolean jugarCantos(Ronda ronda) {
+    private void jugarCantos(Ronda ronda) {
         boolean turnoJugador1 = true;
         while (!ronda.isRondaTerminada()) {
             Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
@@ -69,13 +69,12 @@ public class Partida {
                     // Por simplicidad, vamos a hacer que si se rechaza un canto directamente termina la ronda
                     jugadorActual.sumarPuntos(ronda.getPuntosCantoActual());
                     System.out.println(jugadorActual.getNombre() + " gana la ronda por rechazo de canto.");
-                    return false;
+                    return;
                 }
             }
 
             turnoJugador1 = !turnoJugador1; // Alterna el turno
         }
-        return true;
     }
 
     private void sumarPuntosGanadorRonda(Ronda ronda) {
