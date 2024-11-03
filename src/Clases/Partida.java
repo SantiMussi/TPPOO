@@ -44,13 +44,11 @@ public class Partida {
         repartirCartas();
         Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
-        //Solo verifica cantos al inicio, no después de cada carta
         boolean cantoRealizado = jugarCantos(ronda);
         if (!cantoRealizado) {
             return; // Si la ronda termina por rechazo de canto, no se juega la fase de cartas
         }
 
-        jugarCartas(ronda); // Jugar las cartas sin preguntar por cantos en cada turno
         sumarPuntosGanadorRonda(ronda);
     }
 
@@ -82,20 +80,6 @@ public class Partida {
         return true;
     }
 
-    private void jugarCartas(Ronda ronda) {
-        boolean turnoJugador1 = true;
-        for (int i = 0; i < 3; i++) {
-            Jugador jugadorActual = turnoJugador1 ? jugador1 : jugador2;
-            jugadorActual.mostrarCartas();
-            System.out.println(jugadorActual.getNombre() + ", elige una carta para jugar (0, 1 o 2):");
-
-            int indiceCarta = obtenerIndiceCarta(jugadorActual);
-            ronda.jugarCarta(jugadorActual);
-
-            turnoJugador1 = !turnoJugador1; // Alterna turno para jugar cartas
-        }
-    }
-
     private void sumarPuntosGanadorRonda(Ronda ronda) {
         Jugador ganadorRonda = ronda.obtenerGanadorRonda();
         if (ganadorRonda != null) {
@@ -114,24 +98,6 @@ public class Partida {
 
     private Jugador obtenerOtroJugador(Jugador jugador) {
         return jugador == jugador1 ? jugador2 : jugador1;
-    }
-
-    // Método para obtener un índice de carta válido
-    private int obtenerIndiceCarta(Jugador jugador) {
-        int indice;
-        while (true) {
-            try {
-                indice = scanner.nextInt();
-                if (indice >= 0 && indice < jugador.getMano().size()) {
-                    return indice;
-                } else {
-                    System.out.println("Índice inválido. Elige entre 0 y " + (jugador.getMano().size() - 1) + ":");
-                }
-            } catch (Exception e) {
-                System.out.println("Entrada inválida. Por favor, ingresa un número:");
-                scanner.next(); // Limpia el scanner
-            }
-        }
     }
 
     // Método para obtener respuesta booleana con manejo de errores
