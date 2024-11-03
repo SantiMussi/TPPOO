@@ -20,10 +20,6 @@ public class Jugador {
         System.out.println(nombre +  " canta " + canto);
     }
 
-    public ArrayList<Carta> getMano(){
-        return mano;
-    }
-
     public void recibirCarta(Carta carta){
         mano.add(carta);
     }

@@ -39,12 +39,16 @@ public class Ronda {
 
     public void mostrarOpcionesCanto(Jugador jugador) {
         System.out.println("\n" + jugador.getNombre() + ", elige tu acción:");
-        System.out.println("1. Envido");
-        System.out.println("2. Real Envido");
-        System.out.println("3. Falta Envido");
-        System.out.println("4. Truco");
-        System.out.println("5. Retruco");
-        System.out.println("6. Vale Cuatro");
+
+        if (!envidoCantado || trucoCantado) { // Permitir cantos de truco tras el envido
+            System.out.println("1. Envido");
+            System.out.println("2. Real Envido");
+            System.out.println("3. Falta Envido");
+            System.out.println("4. Truco");
+            System.out.println("5. Retruco");
+            System.out.println("6. Vale Cuatro");
+        }
+
         System.out.println("7. Jugar carta");
         System.out.println("8. Ver cartas");
 
@@ -52,40 +56,25 @@ public class Ronda {
         Canto cantoElegido = null;
 
         switch (opcion) {
-            case 1:
-                cantoElegido = Canto.ENVIDO;
-                break;
-            case 2:
-                cantoElegido = Canto.REAL_ENVIDO;
-                break;
-            case 3:
-                cantoElegido = Canto.FALTA_ENVIDO;
-                break;
-            case 4:
-                cantoElegido = Canto.TRUCO;
-                break;
-            case 5:
-                cantoElegido = Canto.RETRUCO;
-                break;
-            case 6:
-                cantoElegido = Canto.VALECUATRO;
+            case 1: case 2: case 3: case 4: case 5: case 6:
+                cantoElegido = obtenerCanto(opcion);
+                manejarCanto(jugador, cantoElegido);
                 break;
             case 7:
                 jugador.mostrarCartas();
                 int indiceCarta = scanner.nextInt();
                 jugador.jugarCarta(indiceCarta);
+                break;
             case 8:
                 jugador.mostrarCartas();
                 mostrarOpcionesCanto(jugador);
-                return;
+                break;
             default:
                 System.out.println("Opción no válida. Elige de nuevo.");
                 mostrarOpcionesCanto(jugador);
-                return;
         }
-
-        manejarCanto(jugador, cantoElegido);
     }
+
 
     private boolean validarCanto(Canto canto) {
         if (canto == Canto.ENVIDO && trucoCantado) {
@@ -129,14 +118,16 @@ public class Ronda {
     public void responderCanto(Jugador jugador, boolean acepta) {
         if (acepta) {
             System.out.println(jugador.getNombre() + " acepta el canto " + ultimoCanto);
-            if(ultimoCanto == Canto.ENVIDO || ultimoCanto == Canto.REAL_ENVIDO || ultimoCanto == Canto.FALTA_ENVIDO){
+            if (ultimoCanto == Canto.ENVIDO || ultimoCanto == Canto.REAL_ENVIDO || ultimoCanto == Canto.FALTA_ENVIDO) {
                 determinarGanadorEnvido(ultimoCanto);
+                resetearCantos(); // Restablece el estado de canto tras el envido
             }
         } else {
             System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
             obtenerOtroJugador(jugador).sumarPuntos(puntosCantoActual);
         }
     }
+
 
     private Jugador obtenerOtroJugador(Jugador jugador) {
         return jugador == jugador1 ? jugador2 : jugador1;
@@ -183,5 +174,15 @@ public class Ronda {
         return victoriasJugador1 >= 2 || victoriasJugador2 >= 2;
     }
 
-
+    private Canto obtenerCanto(int opcion) {
+        switch (opcion) {
+            case 1: return Canto.ENVIDO;
+            case 2: return Canto.REAL_ENVIDO;
+            case 3: return Canto.FALTA_ENVIDO;
+            case 4: return Canto.TRUCO;
+            case 5: return Canto.RETRUCO;
+            case 6: return Canto.VALECUATRO;
+            default: return null;
+        }
+    }
 }
