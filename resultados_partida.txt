@@ -1,2 +1,3 @@
 El ganador de la partida es: san
 El ganador de la partida es: s
+El ganador de la partida es: nico

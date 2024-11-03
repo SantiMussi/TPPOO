@@ -15,6 +15,9 @@ public class Jugador {
         mano = new ArrayList<>();
     }
 
+    public void reiniciarMano(){
+        mano.clear();
+    }
     public void recibirCarta(Carta carta){
         mano.add(carta);
     }

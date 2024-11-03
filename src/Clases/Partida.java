@@ -20,6 +20,8 @@ public class Partida {
     }
 
     public void repartirCartas() {
+        jugador1.reiniciarMano();
+        jugador2.reiniciarMano();
         for (int i = 0; i < 3; i++) {
             jugador1.recibirCarta(mazo.repartirCarta());
             jugador2.recibirCarta(mazo.repartirCarta());
