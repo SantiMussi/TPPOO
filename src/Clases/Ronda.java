@@ -147,19 +147,29 @@ public class Ronda {
         System.out.println(jugador1.getNombre() + " tiene " + envidoJugador1 + " puntos de envido.");
         System.out.println(jugador2.getNombre() + " tiene " + envidoJugador2 + " puntos de envido.");
 
+        Jugador ganadorEnvido = null;
+
         if (envidoJugador1 > envidoJugador2) {
             jugador1.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 1
             System.out.println(jugador1.getNombre() + " gana el envido.");
-            return jugador1;
+            ganadorEnvido = jugador1;
         } else if (envidoJugador2 > envidoJugador1) {
             jugador2.sumarPuntos(tipoEnvido.getPuntos()); // Suma puntos del envido al jugador 2
             System.out.println(jugador2.getNombre() + " gana el envido.");
-            return jugador2;
+            ganadorEnvido = jugador2;
         } else {
             System.out.println("Empate en el envido, no se asignan puntos.");
-            return null; // Empate
         }
+
+        // Verificación de finalización de la partida
+        if (ganadorEnvido != null && ganadorEnvido.getPuntaje() >= 30) {
+            System.out.println(ganadorEnvido.getNombre() + " ha ganado la partida por Falta Envido!");
+            System.exit(0); // Termina el programa
+        }
+
+        return ganadorEnvido;
     }
+
 
 
     public int getPuntosCantoActual() {
