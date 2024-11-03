@@ -44,11 +44,7 @@ public class Partida {
         repartirCartas();
         Ronda ronda = new Ronda(jugador1, jugador2, scanner);
 
-        boolean cantoRealizado = jugarCantos(ronda);
-        if (!cantoRealizado) {
-            return; // Si la ronda termina por rechazo de canto, no se juega la fase de cartas
-        }
-
+        jugarCantos(ronda);
         sumarPuntosGanadorRonda(ronda);
     }
 

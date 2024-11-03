@@ -6,8 +6,6 @@ public class Ronda {
     private Jugador jugador1;
     private Jugador jugador2;
     private Canto ultimoCanto;
-    private boolean retrucoCantado;
-    private boolean valeCuatroCantado;
     private boolean trucoCantado;
     private boolean envidoCantado;
     private int puntosCantoActual;
@@ -35,8 +33,6 @@ public class Ronda {
 
     private void resetearCantos() {
         this.ultimoCanto = null;
-        this.retrucoCantado = false;
-        this.valeCuatroCantado = false;
         this.trucoCantado = false;
         this.envidoCantado = false;
     }
@@ -66,7 +62,7 @@ public class Ronda {
         System.out.println("8. Ver cartas");
 
         int opcion = scanner.nextInt();
-        Canto cantoElegido = null;
+        Canto cantoElegido;
 
         switch (opcion) {
             case 1: case 2: case 3: case 4: case 5: case 6:
@@ -168,26 +164,6 @@ public class Ronda {
                 System.out.println(jugador2.getNombre() + " gana la ronda!");
             }
         }
-    }
-
-    private boolean validarCanto(Canto canto) {
-        if (canto == Canto.ENVIDO && trucoCantado) {
-            System.out.println("No se puede cantar Envido después del Truco.");
-            return false;
-        } else if (canto == Canto.TRUCO && trucoCantado) {
-            System.out.println("No se puede cantar Truco dos veces.");
-            return false;
-        } else if (canto == Canto.RETRUCO && !trucoCantado) {
-            System.out.println("No se puede cantar Retruco sin Truco.");
-            return false;
-        } else if (canto == Canto.VALECUATRO && !trucoCantado) {
-            System.out.println("No se puede cantar Vale Cuatro sin Truco.");
-            return false;
-        } else if (canto == Canto.ENVIDO && cantRondaChica != 0) {
-            System.out.println("No se puede cantar envido despues de las primeras cartas jugadas");
-            return false;
-        }
-        return true;
     }
 
     public void responderCanto(Jugador jugador, boolean acepta) {
