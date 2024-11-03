@@ -142,14 +142,6 @@ public class Ronda {
         return jugador == jugador1 ? jugador2 : jugador1;
     }
 
-    public void jugarCarta(Jugador jugador) {
-        System.out.println("Elige la carta que quieres jugar:");
-        jugador.mostrarCartas();
-        int indiceCarta = scanner.nextInt();
-        jugador.jugarCarta(indiceCarta);
-    }
-
-
     public Jugador obtenerGanadorRonda() {
         if (victoriasJugador1 >= 2) return jugador1;
         if (victoriasJugador2 >= 2) return jugador2;
