@@ -8,7 +8,6 @@ public class Ronda {
     private Canto ultimoCanto;
     private boolean trucoCantado;
     private boolean envidoCantado;
-    private int puntosCantoActual;
     private Scanner scanner;
     private Carta cartaJugador1;
     private Carta cartaJugador2;
@@ -91,7 +90,7 @@ public class Ronda {
             }
         } else {
             System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
-            otroJugador.sumarPuntos(puntosCantoActual);
+            otroJugador.sumarPuntos(ultimoCanto.getPuntos());
         }
         cantoRespondido = true;
         ultimoCanto = null;
@@ -166,7 +165,7 @@ public class Ronda {
             }
         } else {
             System.out.println(jugador.getNombre() + " rechaza el canto " + ultimoCanto);
-            obtenerOtroJugador(jugador).sumarPuntos(puntosCantoActual);
+            obtenerOtroJugador(jugador).sumarPuntos(ultimoCanto.getPuntos());
         }
     }
 
@@ -201,10 +200,6 @@ public class Ronda {
 
         ultimoCanto = null;
         cantoRespondido = true;
-    }
-
-    public int getPuntosCantoActual() {
-        return puntosCantoActual;
     }
 
     public Canto getUltimoCanto() {
