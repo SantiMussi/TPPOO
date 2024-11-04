@@ -62,7 +62,7 @@ TrucoGame/
 
 3. **Ejecuta la partida**:
    ```bash
-   java src/Partida
+   java src/Main
    ```
 
 4. **Sigue las instrucciones en consola para jugar.**
