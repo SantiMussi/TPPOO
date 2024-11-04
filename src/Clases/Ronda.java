@@ -95,7 +95,6 @@ public class Ronda {
     }
 
     private void manejarCartaJugada(Jugador jugador, Carta carta) {
-        // No debería preguntar por aceptar canto aquí
         if (jugador == jugador1) {
             cartaJugador1 = carta;
         } else {
