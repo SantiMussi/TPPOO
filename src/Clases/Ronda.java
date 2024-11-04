@@ -48,7 +48,6 @@ public class Ronda {
             System.out.println("4. Truco");
         } else if (ultimoCanto == Canto.TRUCO) {
             System.out.println("5. Retruco");
-        } else if (ultimoCanto == Canto.RETRUCO) {
             System.out.println("6. Vale Cuatro");
         }
 
